@@ -1,4 +1,4 @@
-name: Couchbasev4 extension tests
+name: Couchbase extension tests
 
 on:
   push:
