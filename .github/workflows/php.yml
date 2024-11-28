@@ -1,0 +1,72 @@
+name: Couchbasev4 extension tests
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    environment: github-ci
+    runs-on: ${{ matrix.operating-system }}
+    timeout-minutes: 60
+    continue-on-error: true
+
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest]
+        php-versions: ['8.3', '8.4']
+        ext-versions: ['couchbase-4.2.2', 'couchbase-4.2.3', 'couchbase-4.2.4', 'couchbase']
+    name: PHP ${{ matrix.php-versions }} using ${{ matrix.ext-versions }} quality/tests on ${{ matrix.operating-system }}
+    env:
+      extensions: ${{ matrix.ext-versions }}, pcntl, posix
+      key: cache-v1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Couchbase Server
+        run: ./scripts/install_couchbase.sh
+
+      - name: Setup cache environment
+        id: extcache
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: ${{ env.extensions }}
+          key: ${{ env.key }}
+
+      - name: Cache extensions
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.extcache.outputs.dir }}
+          key: ${{ steps.extcache.outputs.key }}
+          restore-keys: ${{ steps.extcache.outputs.key }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: ${{ env.extensions }}
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate --strict
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Run tests
+        run: composer run-script tests

@@ -1,0 +1,27 @@
+{
+  "name": "srjlews/couchbase-forking-error",
+  "description": "description",
+  "minimum-stability": "dev",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": " Steven Lewis",
+      "homepage": "https://github.com/srjlewis"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "srjlewis\\couchbaseForkingError\\": "src"
+    }
+  },
+  "require": {
+    "ext-posix": "*",
+    "ext-pcntl": "*",
+    "ext-couchbase": "^4.0",
+    "couchbase/couchbase": "^4.2.1",
+    "phpfastcache/phpfastcache-devtools": "^9.2"
+  },
+  "tests": [
+    "php ./run.php"
+  ]
+}
