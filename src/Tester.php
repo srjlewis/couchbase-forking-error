@@ -30,14 +30,14 @@ class Tester
         $cache2 = new Connection($config, 'test2');
 
         foreach (range(1, 100) as $i) {
-            $this->testSuccessForking($cache1, $cache2, $i);
+            $this->testForking($cache1, $cache2, $i);
         }
 
         $this->helper->terminateTest();
     }
 
 
-    protected function testSuccessForking(Connection $cache1, Connection $cache2, int $attempt)
+    protected function testForking(Connection $cache1, Connection $cache2, int $attempt): void
     {
         $value1 = \random_int(1, 125);
         $value2 = \random_int(1, 125);

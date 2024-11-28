@@ -30,7 +30,7 @@ class TestHelper extends \Phpfastcache\Tests\Helper\TestHelper
         $this->printText('---');
     }
 
-    public function terminateTest(): void
+    public function terminateTest($reportResultViaExit = false): void
     {
         $execTime = round(microtime(true) - $this->timestamp, 3);
         $totalCount = $this->numOfFailedTests + $this->numOfSkippedTests + $this->numOfPassedTests;
@@ -54,13 +54,13 @@ class TestHelper extends \Phpfastcache\Tests\Helper\TestHelper
         $this->printText('<blue>Test duration: </blue><yellow>' . $execTime . 's</yellow>');
         $this->printText('<blue>Test memory: </blue><yellow>' . $this->getReadableSize(memory_get_peak_usage()) . '</yellow>');
 
-        // if ($this->numOfFailedTests) {
-        //     exit(1);
-        // }
-        //
-        // if ($this->numOfSkippedTests) {
-        //     exit($this->numOfPassedTests ? 0 : 2);
-        // }
+        if ($this->numOfFailedTests && $reportResultViaExit) {
+            exit(1);
+        }
+
+        if ($this->numOfSkippedTests && $reportResultViaExit) {
+            exit($this->numOfPassedTests ? 0 : 2);
+        }
 
         exit(0);
     }

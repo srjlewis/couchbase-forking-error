@@ -21,7 +21,9 @@
     "couchbase/couchbase": "^4.2.1",
     "phpfastcache/phpfastcache-devtools": "^9.2"
   },
-  "tests": [
-    "php ./run.php"
-  ]
+  "scripts": {
+    "tests": [
+      "php ./run.php"
+    ]
+  }
 }
