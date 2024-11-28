@@ -35,7 +35,9 @@ jobs:
       - uses: gacts/run-and-post-run@v1
         id: post-run-command
         with:
-          post: if [ ${{ steps.runtests.outcome == 'failure' }} == true ]; then exit 1; fi
+          post: |
+            echo "Run tests has faild - check tests"
+            if [ ${{ steps.runtests.outcome == 'failure' }} == true ]; then exit 1; fi
 
       - name: Setup cache environment
         id: extcache
