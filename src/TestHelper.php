@@ -29,39 +29,4 @@ class TestHelper extends \Phpfastcache\Tests\Helper\TestHelper
         $this->printText('[<blue>PHP</blue> <yellow>v' . PHP_VERSION . '</yellow> with: <green>' . implode(', ', $loadedExtensions) . '</green>]');
         $this->printText('---');
     }
-
-    public function terminateTest($reportResultViaExit = false): void
-    {
-        $execTime = round(microtime(true) - $this->timestamp, 3);
-        $totalCount = $this->numOfFailedTests + $this->numOfSkippedTests + $this->numOfPassedTests;
-
-        $this->printText(
-            \sprintf(
-                '<blue>Test results:</blue><%1$s> %2$s %3$s failed</%1$s>, <%4$s>%5$s %6$s skipped</%4$s> and <%7$s>%8$s %9$s passed</%7$s> out of a total of %10$s %11$s.',
-                $this->numOfFailedTests ? 'red' : 'green',
-                $this->numOfFailedTests,
-                ngettext('assertion', 'assertions', $this->numOfFailedTests),
-                $this->numOfSkippedTests ? 'yellow' : 'green',
-                $this->numOfSkippedTests,
-                ngettext('assertion', 'assertions', $this->numOfSkippedTests),
-                !$this->numOfPassedTests && $totalCount ? 'red' : 'green',
-                $this->numOfPassedTests,
-                ngettext('assertion', 'assertions', $this->numOfPassedTests),
-                "<cyan>$totalCount</cyan>",
-                ngettext('assertion', 'assertions', $totalCount),
-            )
-        );
-        $this->printText('<blue>Test duration: </blue><yellow>' . $execTime . 's</yellow>');
-        $this->printText('<blue>Test memory: </blue><yellow>' . $this->getReadableSize(memory_get_peak_usage()) . '</yellow>');
-
-        if ($this->numOfFailedTests && $reportResultViaExit) {
-            exit(1);
-        }
-
-        if ($this->numOfSkippedTests && $reportResultViaExit) {
-            exit($this->numOfPassedTests ? 0 : 2);
-        }
-
-        exit(0);
-    }
 }
