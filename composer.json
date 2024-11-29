@@ -22,8 +22,7 @@
     "phpfastcache/phpfastcache-devtools": "^9.2"
   },
   "scripts": {
-    "tests": [
-      "php ./run.php"
-    ]
+    "tests": ["php ./run.php"],
+    "simple-tests": ["php ./simple-tests.php"]
   }
 }

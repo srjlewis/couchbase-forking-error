@@ -64,7 +64,7 @@ class Tester
         if (($value1 + $value2) === \pcntl_wexitstatus($status)) {
             $this->helper->assertPass($childReturned . ': The fork was a success and returned correctly');
         } else {
-            $this->helper->assertFail($childReturned . ': The fork failed');
+            $this->helper->assertFail($childReturned . ': The child fork failed to return');
         }
     }
 }

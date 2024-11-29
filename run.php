@@ -1,4 +1,5 @@
 <?php
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -11,5 +12,14 @@ if (!\file_exists($configFileName)) {
 }
 
 $config = (include $configFileName);
+
+$config = new \srjlewis\couchbaseForkingError\Config(
+    $config['username'],
+    $config['password'],
+    $config['hosts'],
+    $config['bucket'],
+    $config['scope'],
+    $config['collection'],
+);
 
 (new \srjlewis\couchbaseForkingError\Tester($config));
